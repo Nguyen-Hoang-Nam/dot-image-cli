@@ -103,7 +103,6 @@ fn main() {
         0 => 0,
         _ => 1,
     };
-    println!("{}", invert);
 
     let image = match ImageReader::open(image_path) {
         Ok(img) => img.decode().unwrap(),
@@ -115,7 +114,7 @@ fn main() {
 
     for x in 0..width {
         for y in 0..height {
-            if grayscale_rgb.get_pixel(x, y)[0] < 230 {
+            if grayscale_rgb.get_pixel(x, y)[0] < 128 {
                 grayscale_rgb.put_pixel(x, y, Rgb([invert, invert, invert]))
             } else {
                 grayscale_rgb.put_pixel(x, y, Rgb([1 - invert, 1 - invert, 1 - invert]))
