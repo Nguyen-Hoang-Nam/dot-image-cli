@@ -1,3 +1,6 @@
+use std::fs::File;
+use std::io::Write;
+
 use clap::{App, Arg};
 use image::imageops::FilterType;
 use image::io::Reader as ImageReader;
@@ -45,7 +48,7 @@ fn from_utf32(utf32: u32) -> String {
     std::str::from_utf8(&utf8).unwrap().to_string()
 }
 
-fn main() {
+fn main() -> std::io::Result<()> {
     let matches = App::new("dot-image")
         .version("0.1.0")
         .author("N.H Nam <nguyenhoangnam.dev@gmail.com>")
@@ -99,6 +102,8 @@ fn main() {
         None => 20,
     };
 
+    let output = matches.value_of("output").unwrap_or("");
+
     let invert = match matches.occurrences_of("invert") {
         0 => 0,
         _ => 1,
@@ -123,6 +128,8 @@ fn main() {
     }
 
     let mut row: Vec<u8> = Vec::new();
+
+    let mut result: String = "".to_owned();
 
     let row_width = (width + width % 2) / 2;
     for _ in 0..row_width {
@@ -164,7 +171,17 @@ fn main() {
             for i in 0..row_width {
                 icon_list.push_str(&from_utf32(row[i as usize] as u32 + FIRST_EMOJI));
             }
-            println!("{}", icon_list)
+            result.push_str(&icon_list);
+            result.push_str("\n");
         }
     }
+
+    if output == "" {
+        println!("{}", result)
+    } else {
+        let mut file = File::create(output)?;
+        file.write_all(result.as_bytes())?;
+    }
+
+    Ok(())
 }
