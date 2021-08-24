@@ -4,6 +4,8 @@ Print image as dot in terminal
 
 ![Screenshot](https://raw.githubusercontent.com/Nguyen-Hoang-Nam/readme-image/main/dot-image/screenshot.png)
 
+[![asciicast](https://asciinema.org/a/G8Cq4y0Ob76UDEokcZso5a7dN.svg)](https://asciinema.org/a/G8Cq4y0Ob76UDEokcZso5a7dN)
+
 ## Installation
 
 ### Manual
@@ -16,12 +18,18 @@ The best way to install is you already have Rust, and you build release with `ca
 $ dot-image -i path/to/image -w 100 -h 100
 ```
 
+## Support
+
+- Image (png, jpg)
+- Gif
+
 ## TODO
 
 - [ ] Support color
 - [ ] Use Otsu's method to threshold
 - [x] Auto scale image
 - [x] Write file
+- [ ] Support video
 
 ## Contributing
 
