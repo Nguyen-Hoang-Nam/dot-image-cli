@@ -4,7 +4,7 @@ use std::io::Write;
 use clap::{App, Arg};
 use image::imageops::FilterType;
 use image::io::Reader as ImageReader;
-use image::Rgb;
+use image::{GenericImageView, Rgb};
 // use image::{GenericImage, GenericImageView};
 
 static FIRST_EMOJI: u32 = 10240;
@@ -93,13 +93,13 @@ fn main() -> std::io::Result<()> {
         Some(path) => path,
         None => panic!("Missing image'spath"),
     };
-    let width = match matches.value_of("width") {
+    let mut width = match matches.value_of("width") {
         Some(w) => w.to_string().parse::<u32>().unwrap(),
-        None => 20,
+        None => 0,
     };
-    let height = match matches.value_of("height") {
+    let mut height = match matches.value_of("height") {
         Some(h) => h.to_string().parse::<u32>().unwrap(),
-        None => 20,
+        None => 0,
     };
 
     let output = matches.value_of("output").unwrap_or("");
@@ -113,7 +113,20 @@ fn main() -> std::io::Result<()> {
         Ok(img) => img.decode().unwrap(),
         Err(_) => panic!("Can not open image"),
     };
-    let scale = image.resize(width, height, FilterType::Triangle);
+
+    if height == 0 {
+        let (current_width, current_height) = image.dimensions();
+
+        height = width * current_height / current_width;
+    }
+
+    if width == 0 {
+        let (current_width, current_height) = image.dimensions();
+
+        width = height * current_width / current_height;
+    }
+
+    let scale = image.resize_exact(width, height, FilterType::Triangle);
 
     let mut grayscale_rgb = scale.grayscale().to_rgb8();
 
@@ -177,7 +190,7 @@ fn main() -> std::io::Result<()> {
     }
 
     if output == "" {
-        println!("{}", result)
+        println!("\n{}", result)
     } else {
         let mut file = File::create(output)?;
         file.write_all(result.as_bytes())?;
