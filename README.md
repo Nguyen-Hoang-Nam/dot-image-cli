@@ -20,7 +20,7 @@ $ dot-image -i path/to/image -w 100 -h 100
 
 - [ ] Support color
 - [ ] Use Otsu's method to threshold
-- [ ] Auto scale image
+- [x] Auto scale image
 - [x] Write file
 
 ## Contributing

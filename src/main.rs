@@ -82,6 +82,13 @@ fn main() -> std::io::Result<()> {
                 .takes_value(true),
         )
         .arg(
+            Arg::with_name("threshold")
+                .short("t")
+                .long("threshold")
+                .help("Threshold image")
+                .takes_value(true),
+        )
+        .arg(
             Arg::with_name("invert")
                 .short("I")
                 .long("invert")
@@ -109,6 +116,12 @@ fn main() -> std::io::Result<()> {
         _ => 1,
     };
 
+    let threshold = matches
+        .value_of("threshold")
+        .unwrap_or("128")
+        .parse::<u8>()
+        .unwrap();
+
     let image = match ImageReader::open(image_path) {
         Ok(img) => img.decode().unwrap(),
         Err(_) => panic!("Can not open image"),
@@ -132,7 +145,7 @@ fn main() -> std::io::Result<()> {
 
     for x in 0..width {
         for y in 0..height {
-            if grayscale_rgb.get_pixel(x, y)[0] < 128 {
+            if grayscale_rgb.get_pixel(x, y)[0] < threshold {
                 grayscale_rgb.put_pixel(x, y, Rgb([invert, invert, invert]))
             } else {
                 grayscale_rgb.put_pixel(x, y, Rgb([1 - invert, 1 - invert, 1 - invert]))
