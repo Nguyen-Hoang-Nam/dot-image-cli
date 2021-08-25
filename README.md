@@ -6,6 +6,8 @@ Print image as dot in terminal
 
 [![asciicast](https://asciinema.org/a/G8Cq4y0Ob76UDEokcZso5a7dN.svg)](https://asciinema.org/a/G8Cq4y0Ob76UDEokcZso5a7dN)
 
+![Color](https://raw.githubusercontent.com/Nguyen-Hoang-Nam/readme-image/main/dot-image/color.jpg)
+
 ## Installation
 
 ### Manual
@@ -14,8 +16,18 @@ The best way to install is you already have Rust, and you build release with `ca
 
 ## Usage
 
+By default, image will be converted to grayscale then binary colors and displayed.
+
 ```bash
 $ dot-image -i path/to/image -w 100 -h 100
+```
+
+If you want the opposite color then use `-I` flag, stand for invert.
+
+The experiment feature color dot image
+
+```bash
+$ dot-image -i path/to/image -w 100 -h 100 -c
 ```
 
 ## Support
@@ -25,7 +37,7 @@ $ dot-image -i path/to/image -w 100 -h 100
 
 ## TODO
 
-- [ ] Support color
+- [x] Support color
 - [ ] Use Otsu's method to threshold
 - [x] Auto scale image
 - [x] Write file
